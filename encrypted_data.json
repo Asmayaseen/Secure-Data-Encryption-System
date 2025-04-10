@@ -1,5 +1,43 @@
-<<<<<<< HEAD
-[{"type": "encrypted", "text": "gAAAAABn9sDWs_xit9Y5xjj-3jPxcIqgrZfudzFrfPLOwcIpu-S840OMmASwucR2dlIEyxCJPtzgNKCzA2HcFjou7-7iKQ-lO-UKvprQbNV37hYHuGgwMAE="}, {"type": "decrypted", "text": "\"Welcome to the secure system!\""}, {"type": "encrypted", "text": "gAAAAABn9sQ8XvwoHa_tHZ3GzWO4bit19jsPh8sHmz5K-F9bARDmCgGjADfxp_V-btiTsqa82_fexQfnCbeMqgYuT0jmgb76lArHq-J2eyBPa3NDFQIeNzo="}, {"type": "decrypted", "text": "your account is scure."}, {"type": "encrypted", "text": "gAAAAABn9sZi9YjE7TDjmPNp5z1TTnImqRh0Xhz6KB1Gt0bV_RBQ6oPThe40T0QosRp32DHcGPrQ6UkwveIJjY7Gh2yOQAIASd71opLaD_dl_AVdmsUfRQg="}, {"type": "decrypted", "text": "my data is save."}, {"type": "encrypted", "text": "gAAAAABn9sdp1xYHOmYWc43vEyO6b88SINHm5PXk6clpmDLLX01dxV8NPip1DDZJYXFNfqBw1xD8otTtBYBuQ1DncMnVhEt6v23reu4sxDJB9ZZyAgyxMlU="}, {"type": "decrypted", "text": "my security is perfect"}, {"type": "encrypted", "text": "gAAAAABn9vwvaaNun2dE4dJ__s4CmIawf3jn_59l9Htd6F3sAtM8TEQTAOfN9iuPnmfw_RIvKxnlp6Kl4orlkhEsIg6GDe5LETZAH_8T6tyX8xmCpsJK7DI="}, {"type": "decrypted", "text": "it's powerful source"}]
-=======
-[{"type": "encrypted", "text": "gAAAAABn9sDWs_xit9Y5xjj-3jPxcIqgrZfudzFrfPLOwcIpu-S840OMmASwucR2dlIEyxCJPtzgNKCzA2HcFjou7-7iKQ-lO-UKvprQbNV37hYHuGgwMAE="}, {"type": "decrypted", "text": "\"Welcome to the secure system!\""}, {"type": "encrypted", "text": "gAAAAABn9sQ8XvwoHa_tHZ3GzWO4bit19jsPh8sHmz5K-F9bARDmCgGjADfxp_V-btiTsqa82_fexQfnCbeMqgYuT0jmgb76lArHq-J2eyBPa3NDFQIeNzo="}, {"type": "decrypted", "text": "your account is scure."}, {"type": "encrypted", "text": "gAAAAABn9sZi9YjE7TDjmPNp5z1TTnImqRh0Xhz6KB1Gt0bV_RBQ6oPThe40T0QosRp32DHcGPrQ6UkwveIJjY7Gh2yOQAIASd71opLaD_dl_AVdmsUfRQg="}, {"type": "decrypted", "text": "my data is save."}]
->>>>>>> e92be6d9a45516529a2c1e063f6bc9ef3439f86d
+[
+    {
+      "type": "encrypted",
+      "text": "gAAAAABn9sDWs_xit9Y5xjj-3jPxcIqgrZfudzFrfPLOwcIpu-S840OMmASwucR2dlIEyxCJPtzgNKCzA2HcFjou7-7iKQ-lO-UKvprQbNV37hYHuGgwMAE="
+    },
+    {
+      "type": "decrypted",
+      "text": "Welcome to the secure system!"
+    },
+    {
+      "type": "encrypted",
+      "text": "gAAAAABn9sQ8XvwoHa_tHZ3GzWO4bit19jsPh8sHmz5K-F9bARDmCgGjADfxp_V-btiTsqa82_fexQfnCbeMqgYuT0jmgb76lArHq-J2eyBPa3NDFQIeNzo="
+    },
+    {
+      "type": "decrypted",
+      "text": "your account is secure."
+    },
+    {
+      "type": "encrypted",
+      "text": "gAAAAABn9sZi9YjE7TDjmPNp5z1TTnImqRh0Xhz6KB1Gt0bV_RBQ6oPThe40T0QosRp32DHcGPrQ6UkwveIJjY7Gh2yOQAIASd71opLaD_dl_AVdmsUfRQg="
+    },
+    {
+      "type": "decrypted",
+      "text": "my data is safe."
+    },
+    {
+      "type": "encrypted",
+      "text": "gAAAAABn9sdp1xYHOmYWc43vEyO6b88SINHm5PXk6clpmDLLX01dxV8NPip1DDZJYXFNfqBw1xD8otTtBYBuQ1DncMnVhEt6v23reu4sxDJB9ZZyAgyxMlU="
+    },
+    {
+      "type": "decrypted",
+      "text": "my security is perfect"
+    },
+    {
+      "type": "encrypted",
+      "text": "gAAAAABn9vwvaaNun2dE4dJ__s4CmIawf3jn_59l9Htd6F3sAtM8TEQTAOfN9iuPnmfw_RIvKxnlp6Kl4orlkhEsIg6GDe5LETZAH_8T6tyX8xmCpsJK7DI="
+    },
+    {
+      "type": "decrypted",
+      "text": "it's a powerful source"
+    }
+  ]
+  
