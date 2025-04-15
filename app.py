@@ -1,6 +1,6 @@
-import streamlit as st
+import streamlit as st # type: ignore
 from cryptography.fernet import Fernet
-from dotenv import load_dotenv
+from dotenv import load_dotenv # type: ignore
 import os
 import json
 

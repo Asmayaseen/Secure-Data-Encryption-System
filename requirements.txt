@@ -1,3 +1,7 @@
-streamlit
-cryptography
-python-dotenv
+
+streamlit==1.14.1
+cryptography==44.0.2
+pycparser==2.22
+cffi==1.17.1
+python-dotenv==0.19.0  
+
