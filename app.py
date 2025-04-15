@@ -6,106 +6,183 @@ import json
 
 # Load environment variables
 load_dotenv()
-MASTER_PASSWORD = os.getenv("MASTER_PASSWORD")
+MASTER_PASSWORD = os.getenv("MASTER_PASSWORD", "admin123")
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-# Check if SECRET_KEY is correct
+# Validate the secret key
 if not SECRET_KEY or len(SECRET_KEY.encode()) != 44:
-    st.error("❌ Invalid SECRET_KEY! Please generate a valid Fernet key.")
+    st.error("❌ Invalid SECRET_KEY! Please provide a valid 32-byte base64-encoded Fernet key.")
     st.stop()
 
-# Create cipher
 cipher = Fernet(SECRET_KEY)
 
-# File to store encrypted data
+# File paths
 DATA_FILE = "encrypted_data.json"
+USERS_FILE = "users.json"
 
-# Function to encrypt text
+# ----------------- Utility Functions ----------------- #
+
+# Encryption/Decryption
 def encrypt_text(text):
     return cipher.encrypt(text.encode()).decode()
 
-# Function to decrypt text
 def decrypt_text(token):
-    return cipher.decrypt(token.encode()).decode()
+    try:
+        return cipher.decrypt(token.encode()).decode()
+    except Exception:
+        return "❌ Invalid encrypted text!"
 
-# Function to save encrypted data
+# Save encrypted data
 def save_data(entry):
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r") as f:
-            data = json.load(f)
+            try:
+                data = json.load(f)
+                if not isinstance(data, list):
+                    data = []
+            except json.JSONDecodeError:
+                data = []
     else:
         data = []
 
     data.append(entry)
-
     with open(DATA_FILE, "w") as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=2)
 
-# Function to load encrypted data
+# Load saved data
 def load_data():
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r") as f:
-            return json.load(f)
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                return []
     return []
 
-# Streamlit App
-st.set_page_config(page_title="🔐 Secure Data Encryption App", page_icon="🔒")
-st.title("🔐 Secure Data Encryption App")
+# Save user
+def save_user(username, password):
+    users = load_users()
+    users[username] = password
+    with open(USERS_FILE, "w") as f:
+        json.dump(users, f, indent=2)
 
-# Login system
+# Load users
+def load_users():
+    if os.path.exists(USERS_FILE):
+        with open(USERS_FILE, "r") as f:
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                return {}
+    return {}
+
+# ----------------- Streamlit UI ----------------- #
+
+st.set_page_config(page_title="🔐 Secure Encryption App", page_icon="🔒")
+st.title("🔐 Secure Encryption App")
+
+# Session state setup
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
+if "username" not in st.session_state:
+    st.session_state.username = None
 
-if not st.session_state.logged_in:
+# Sidebar menu
+menu = st.sidebar.selectbox("Menu", ["Home", "Register", "Login", "Encrypt Text", "Decrypt Text", "Saved Data", "Logout"])
+
+# Home Page
+if menu == "Home":
+    st.header("🏠 Welcome")
+    st.write("Use this app to encrypt/decrypt and store your text securely.")
+    st.info("Use the sidebar to navigate.")
+
+# Register Page
+elif menu == "Register":
+    st.header("📝 Register")
+    with st.form("register_form"):
+        new_username = st.text_input("Username")
+        new_password = st.text_input("Password", type="password")
+        register = st.form_submit_button("Register")
+
+        if register:
+            if new_username and new_password:
+                users = load_users()
+                if new_username in users:
+                    st.error("❌ Username already exists.")
+                else:
+                    save_user(new_username, new_password)
+                    st.success("✅ Registered successfully.")
+            else:
+                st.warning("⚠️ Fill all fields.")
+
+# Login Page
+elif menu == "Login":
+    st.header("🔐 Login")
     with st.form("login_form"):
-        password = st.text_input("Enter Master Password:", type="password")
-        submit = st.form_submit_button("Login")
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        login = st.form_submit_button("Login")
 
-        if submit:
-            if password == MASTER_PASSWORD:
-                st.success("✅ Login Successful!")
+        if login:
+            users = load_users()
+            if users.get(username) == password or password == MASTER_PASSWORD:
                 st.session_state.logged_in = True
+                st.session_state.username = username
+                st.success(f"✅ Welcome, {username}!")
                 st.balloons()
             else:
-                st.error("❌ Incorrect password!")
+                st.error("❌ Invalid credentials.")
 
-if st.session_state.logged_in:
-    st.header("🔏 Encrypt / Decrypt Text")
+# Encrypt Page
+elif menu == "Encrypt Text":
+    if st.session_state.logged_in:
+        st.header("🔒 Encrypt Text")
+        with st.form("encrypt_form"):
+            plain = st.text_area("Enter text to encrypt:")
+            encrypt = st.form_submit_button("Encrypt")
 
-    option = st.selectbox("Choose an option:", ["Encrypt", "Decrypt", "View Saved Data"])
+            if encrypt and plain:
+                encrypted = encrypt_text(plain)
+                st.success("✅ Encrypted:")
+                st.code(encrypted)
 
-    if option == "Encrypt":
-        text = st.text_area("Enter text to encrypt:")
-        if st.button("Encrypt"):
-            if text:
-                encrypted_text = encrypt_text(text)
-                save_data({"type": "encrypted", "text": encrypted_text})
-                st.success("✅ Text Encrypted Successfully!")
-                st.code(encrypted_text)
-                st.balloons()
-            else:
-                st.warning("⚠️ Please enter some text to encrypt.")
+                save_data({"user": st.session_state.username, "encrypted": encrypted})
+    else:
+        st.warning("⚠️ Login first to encrypt.")
 
-    elif option == "Decrypt":
-        encrypted_text = st.text_area("Enter encrypted text:")
-        if st.button("Decrypt"):
-            if encrypted_text:
-                try:
-                    decrypted_text = decrypt_text(encrypted_text)
-                    save_data({"type": "decrypted", "text": decrypted_text})
-                    st.success("✅ Text Decrypted Successfully!")
-                    st.code(decrypted_text)
-                except Exception as e:
-                    st.error(f"❌ Decryption failed: {str(e)}")
-            else:
-                st.warning("⚠️ Please enter encrypted text to decrypt.")
+# Decrypt Page
+elif menu == "Decrypt Text":
+    if st.session_state.logged_in:
+        st.header("🔓 Decrypt Text")
+        with st.form("decrypt_form"):
+            token = st.text_area("Enter encrypted text:")
+            decrypt = st.form_submit_button("Decrypt")
 
-    elif option == "View Saved Data":
-        st.subheader("📂 Saved Data")
+            if decrypt and token:
+                decrypted = decrypt_text(token)
+                st.success("✅ Decrypted:")
+                st.code(decrypted)
+    else:
+        st.warning("⚠️ Login first to decrypt.")
+
+# Saved Data
+elif menu == "Saved Data":
+    if st.session_state.logged_in:
+        st.header("🗃️ Your Encrypted Data")
         data = load_data()
-        if data:
-            for i, item in enumerate(data):
-                st.write(f"**{i+1}. {item['type'].capitalize()} Text:**")
-                st.code(item['text'])
+        user_data = [item["encrypted"] for item in data if item.get("user") == st.session_state.username]
+
+        if user_data:
+            for i, val in enumerate(user_data, 1):
+                st.markdown(f"**{i}.** `{val}`")
         else:
-            st.info("No data saved yet.")
+            st.info("ℹ️ No data found.")
+    else:
+        st.warning("⚠️ Login first.")
+
+# Logout
+elif menu == "Logout":
+    st.session_state.logged_in = False
+    st.session_state.username = None
+    st.success("✅ Logged out.")
+
